@@ -22,7 +22,7 @@ public class ShangjiaServiceImpl extends ServiceImpl<ShangjiaMapper, ShangjiaEnt
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ShangjiaEntity> page = this.selectPage(
-                new Query<ShangjiaEntity>(params).getPage(),
+                new Query<ShangjiaEntity>(params).getPage(params),
                 new EntityWrapper<ShangjiaEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class ShangjiaServiceImpl extends ServiceImpl<ShangjiaMapper, ShangjiaEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<ShangjiaEntity> wrapper) {
-        Page<ShangjiaDTO> page = new Query<ShangjiaDTO>(params).getPage();
+        Page<ShangjiaDTO> page = new Query<ShangjiaDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

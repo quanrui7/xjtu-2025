@@ -22,7 +22,7 @@ public class LingshifenleiServiceImpl extends ServiceImpl<LingshifenleiMapper, L
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<LingshifenleiEntity> page = this.selectPage(
-                new Query<LingshifenleiEntity>(params).getPage(),
+                new Query<LingshifenleiEntity>(params).getPage(params),
                 new EntityWrapper<LingshifenleiEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class LingshifenleiServiceImpl extends ServiceImpl<LingshifenleiMapper, L
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<LingshifenleiEntity> wrapper) {
-        Page<LingshifenleiDTO> page = new Query<LingshifenleiDTO>(params).getPage();
+        Page<LingshifenleiDTO> page = new Query<LingshifenleiDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

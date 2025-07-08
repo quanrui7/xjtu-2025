@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * 零食分类
+ * 商品分类
  *
  * @author
  * @email

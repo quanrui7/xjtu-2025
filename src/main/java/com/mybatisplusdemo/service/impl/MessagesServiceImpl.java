@@ -22,7 +22,7 @@ public class MessagesServiceImpl extends ServiceImpl<MessagesMapper, MessagesEnt
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<MessagesEntity> page = this.selectPage(
-                new Query<MessagesEntity>(params).getPage(),
+                new Query<MessagesEntity>(params).getPage(params),
                 new EntityWrapper<MessagesEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class MessagesServiceImpl extends ServiceImpl<MessagesMapper, MessagesEnt
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<MessagesEntity> wrapper) {
-        Page<MessagesDTO> page = new Query<MessagesDTO>(params).getPage();
+        Page<MessagesDTO> page = new Query<MessagesDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

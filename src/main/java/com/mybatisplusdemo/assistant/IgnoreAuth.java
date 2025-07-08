@@ -2,9 +2,8 @@ package com.mybatisplusdemo.assistant;
 
 import java.lang.annotation.*;
 
-/**
- * 忽略Token验证
- */
+//忽略Token验证
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

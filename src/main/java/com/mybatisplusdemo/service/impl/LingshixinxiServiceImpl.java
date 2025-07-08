@@ -22,7 +22,7 @@ public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, Lin
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<LingshixinxiEntity> page = this.selectPage(
-                new Query<LingshixinxiEntity>(params).getPage(),
+                new Query<LingshixinxiEntity>(params).getPage(params),
                 new EntityWrapper<LingshixinxiEntity>()
         );
         return new PageUtils(page);
@@ -30,11 +30,13 @@ public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, Lin
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<LingshixinxiEntity> wrapper) {
-        Page<LingshixinxiDTO> page = new Query<LingshixinxiDTO>(params).getPage();
+        Page<LingshixinxiDTO> page = new Query<LingshixinxiDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;
     }
+
+
 
     @Override
     public List<LingshixinxiDTO> selectListView(Wrapper<LingshixinxiEntity> wrapper) {
@@ -47,4 +49,21 @@ public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, Lin
     }
 
 
+    // 智能排序：点击量高置前，若相同则时间新置前
+    @Override
+    public PageUtils autoSort(Map<String, Object> params) {
+        // 默认每页10条
+        params.putIfAbsent("limit", "10");
+        params.putIfAbsent("page",  "1");
+
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
+        ew.eq("sfsh", "是")
+                .orderBy("click_number", false)
+                .orderBy("addtime",      false);
+
+        Page<LingshixinxiEntity> page = this.selectPage(
+                new Query<LingshixinxiEntity>().getPage(params), ew);
+
+        return new PageUtils(page);
+    }
 }

@@ -43,8 +43,11 @@ public class ShangjiaController {
     @RequestMapping(value = "/login")
     public R login(String username, String password, String captcha, HttpServletRequest request) {
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", username));
+        if (u == null || !u.getShangjiazhanghao().equals(username)) {
+            return R.error("账号不正确");
+        }
         if (u == null || !u.getShangjiamima().equals(password)) {
-            return R.error("账号或密码不正确");
+            return R.error("密码不正确");
         }
         String token = tokenService.generateToken(u.getId(), username, "shangjia", "管理员");
         return R.ok().put("token", token);

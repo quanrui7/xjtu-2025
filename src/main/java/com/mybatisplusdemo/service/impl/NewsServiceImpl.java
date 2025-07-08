@@ -22,7 +22,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, NewsEntity> impleme
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<NewsEntity> page = this.selectPage(
-                new Query<NewsEntity>(params).getPage(),
+                new Query<NewsEntity>(params).getPage(params),
                 new EntityWrapper<NewsEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, NewsEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<NewsEntity> wrapper) {
-        Page<NewsDTO> page = new Query<NewsDTO>(params).getPage();
+        Page<NewsDTO> page = new Query<NewsDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

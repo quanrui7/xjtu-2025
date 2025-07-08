@@ -22,7 +22,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, UsersEntity> impl
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<UsersEntity> page = this.selectPage(
-                new Query<UsersEntity>(params).getPage(),
+                new Query<UsersEntity>(params).getPage(params),
                 new EntityWrapper<UsersEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, UsersEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<UsersEntity> wrapper) {
-        Page<UsersDTO> page = new Query<UsersDTO>(params).getPage();
+        Page<UsersDTO> page = new Query<UsersDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

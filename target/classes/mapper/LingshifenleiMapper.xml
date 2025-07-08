@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatisplusdemo.mapper.LingshifenleiMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.mybatisplusdemo.model.domain.LingshifenleiEntity" id="lingshifenleiMap">
+        <result property="lingshifenlei" column="lingshifenlei"/>
+    </resultMap>
+
+    <select id="selectListView"
+            resultType="com.mybatisplusdemo.model.dto.LingshifenleiDTO">
+
+        SELECT lingshifenlei.* FROM lingshifenlei lingshifenlei
+        <where>1=1 ${ew.sqlSegment}</where>
+    </select>
+
+    <select id="selectView"
+            resultType="com.mybatisplusdemo.model.dto.LingshifenleiDTO">
+        SELECT * FROM lingshifenlei lingshifenlei
+        <where>1=1 ${ew.sqlSegment}</where>
+    </select>
+
+
+</mapper>

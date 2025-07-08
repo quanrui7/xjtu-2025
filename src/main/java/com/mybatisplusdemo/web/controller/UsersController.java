@@ -43,8 +43,11 @@ public class UsersController {
     @RequestMapping(value = "/login")
     public R login(String username, String password, String captcha, HttpServletRequest request) {
         UsersEntity u = usersService.selectOne(new EntityWrapper<UsersEntity>().eq("username", username));
+        if (u == null || !u.getUsername().equals(username)) {
+            return R.error("账号不正确");
+        }
         if (u == null || !u.getPassword().equals(password)) {
-            return R.error("账号或密码不正确");
+            return R.error("密码不正确");
         }
         String token = tokenService.generateToken(u.getId(), username, "users", "管理员");
         return R.ok().put("token", token);

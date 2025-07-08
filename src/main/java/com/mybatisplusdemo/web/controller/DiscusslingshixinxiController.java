@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * 零食信息评论表
+ * 商品信息评论表
  * 后端接口
  *
  * @author
@@ -79,7 +79,7 @@ public class DiscusslingshixinxiController {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
         ew.allEq(MPUtil.allEQMapPre(discusslingshixinxi, "discusslingshixinxi"));
         DiscusslingshixinxiDTO discusslingshixinxiView = discusslingshixinxiService.selectView(ew);
-        return R.ok("查询零食信息评论表成功").put("data", discusslingshixinxiView);
+        return R.ok("查询商品信息评论表成功").put("data", discusslingshixinxiView);
     }
 
     /**

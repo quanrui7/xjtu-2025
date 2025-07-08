@@ -11,7 +11,6 @@ import com.mybatisplusdemo.service.StoreupService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
 import com.mybatisplusdemo.common.utils.R;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,269 +19,233 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * 零食信息
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
+ * 商品信息
  */
 @RestController
 @RequestMapping("/lingshixinxi")
 public class LingshixinxiController {
-    @Autowired
-    private LingshixinxiService lingshixinxiService;
 
-    @Autowired
-    private StoreupService storeupService;
+    @Autowired private LingshixinxiService lingshixinxiService;
+    @Autowired private StoreupService      storeupService;
+    @Autowired private OrdersService       ordersService;
 
-    @Autowired
-    private OrdersService ordersService;
-
-
-    /**
-     * 后台列表
-     */
+    /*──────────────────  后台分页  ──────────────────*/
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, LingshixinxiEntity lingshixinxi,
+    public R page(@RequestParam Map<String, Object> params,
+                  LingshixinxiEntity lingshixinxi,
                   HttpServletRequest request) {
-        String tableName = request.getSession().getAttribute("tableName").toString();
-        if (tableName.equals("shangjia")) {
-            lingshixinxi.setShangjiazhanghao((String) request.getSession().getAttribute("username"));
+
+        // 商家只能查自己的商品
+        String tableName = String.valueOf(request.getSession().getAttribute("tableName"));
+        if ("shangjia".equals(tableName)) {
+            lingshixinxi.setShangjiazhanghao(
+                    String.valueOf(request.getSession().getAttribute("username")));
         }
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
 
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
+        PageUtils page = lingshixinxiService.queryPage(
+                params,
+                MPUtil.sort(
+                        MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
 
-        PageUtils page = lingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
         return R.ok().put("data", page);
     }
 
-
-    /**
-     * 前端列表
-     */
+    /*──────────────────  前端普通列表  ──────────────────*/
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, LingshixinxiEntity lingshixinxi,
-                  HttpServletRequest request) {
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
+    public R list(@RequestParam Map<String, Object> params,
+                  LingshixinxiEntity lingshixinxi) {
 
-        PageUtils page = lingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
+        PageUtils page = lingshixinxiService.queryPage(
+                params,
+                MPUtil.sort(
+                        MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
+
         return R.ok().put("data", page);
     }
 
-    /**
-     * 列表
-     */
+    /*──────────────────  where 全等查询  ──────────────────*/
     @RequestMapping("/lists")
     public R list(LingshixinxiEntity lingshixinxi) {
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
         ew.allEq(MPUtil.allEQMapPre(lingshixinxi, "lingshixinxi"));
         return R.ok().put("data", lingshixinxiService.selectListView(ew));
     }
 
-    /**
-     * 查询
-     */
+    /*──────────────────  单条查询  ──────────────────*/
     @RequestMapping("/query")
     public R query(LingshixinxiEntity lingshixinxi) {
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
         ew.allEq(MPUtil.allEQMapPre(lingshixinxi, "lingshixinxi"));
-        LingshixinxiDTO lingshixinxiView = lingshixinxiService.selectView(ew);
-        return R.ok("查询零食信息成功").put("data", lingshixinxiView);
+        LingshixinxiDTO dto = lingshixinxiService.selectView(ew);
+        return R.ok("查询商品信息成功").put("data", dto);
     }
 
-    /**
-     * 后端详情
-     */
+    /*──────────────────  后台详情（统计点击量）  ──────────────────*/
     @RequestMapping("/info/{id}")
     public R info(@PathVariable("id") Long id) {
-        LingshixinxiEntity lingshixinxi = lingshixinxiService.selectById(id);
-        if (null == lingshixinxi.getClickNumber()) {
-            lingshixinxi.setClickNumber(0);
-        }
-        lingshixinxi.setClickNumber(lingshixinxi.getClickNumber() + 1);
-        lingshixinxi.setClicktime(new Date());
-        lingshixinxiService.updateById(lingshixinxi);
-        lingshixinxi = lingshixinxiService.selectView(new EntityWrapper<LingshixinxiEntity>().eq("id", id));
-        return R.ok().put("data", lingshixinxi);
+        LingshixinxiEntity entity = increaseClick(id);
+        return R.ok().put("data", entity);
     }
 
-    /**
-     * 前端详情
-     */
+    /*──────────────────  前端详情（统计点击量）  ──────────────────*/
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
     public R detail(@PathVariable("id") Long id) {
-        LingshixinxiEntity lingshixinxi = lingshixinxiService.selectById(id);
-        if (null == lingshixinxi.getClickNumber()) {
-            lingshixinxi.setClickNumber(0);
-        }
-        lingshixinxi.setClickNumber(lingshixinxi.getClickNumber() + 1);
-        lingshixinxi.setClicktime(new Date());
-        lingshixinxiService.updateById(lingshixinxi);
-        lingshixinxi = lingshixinxiService.selectView(new EntityWrapper<LingshixinxiEntity>().eq("id", id));
-        return R.ok().put("data", lingshixinxi);
+        LingshixinxiEntity entity = increaseClick(id);
+        return R.ok().put("data", entity);
     }
 
+    /** 共用的“点一次 +1” 方法 */
+    private LingshixinxiEntity increaseClick(Long id) {
+        LingshixinxiEntity e = lingshixinxiService.selectById(id);
+        if (e.getClickNumber() == null) e.setClickNumber(0);
+        e.setClickNumber(e.getClickNumber() + 1);
+        e.setClicktime(new Date());
+        lingshixinxiService.updateById(e);
+        return lingshixinxiService.selectView(new EntityWrapper<LingshixinxiEntity>().eq("id", id));
+    }
 
-    /**
-     * 赞或踩
-     */
+    /*──────────────────  点赞 / 踩  ──────────────────*/
     @RequestMapping("/thumbsup/{id}")
-    public R vote(@PathVariable("id") String id, String type) {
-        LingshixinxiEntity lingshixinxi = lingshixinxiService.selectById(id);
-        if (type.equals("1")) {
-            lingshixinxi.setThumbsupNumber(lingshixinxi.getThumbsupNumber() + 1);
+    public R vote(@PathVariable("id") Long id, String type) {
+        LingshixinxiEntity entity = lingshixinxiService.selectById(id);
+        if ("1".equals(type)) {
+            entity.setThumbsupNumber(entity.getThumbsupNumber() + 1);
         } else {
-            lingshixinxi.setCrazilyNumber(lingshixinxi.getCrazilyNumber() + 1);
+            entity.setCrazilyNumber(entity.getCrazilyNumber() + 1);
         }
-        lingshixinxiService.updateById(lingshixinxi);
+        lingshixinxiService.updateById(entity);
         return R.ok("投票成功");
     }
 
-    /**
-     * 后端保存
-     */
+    /*──────────────────  新增 / 修改 / 删除  ──────────────────*/
     @RequestMapping("/save")
-    public R save(@RequestBody LingshixinxiEntity lingshixinxi, HttpServletRequest request) {
-        //ValidatorUtils.validateEntity(lingshixinxi);
+    public R save(@RequestBody LingshixinxiEntity lingshixinxi) {
         lingshixinxiService.insert(lingshixinxi);
         return R.ok();
     }
 
-    /**
-     * 前端保存
-     */
     @RequestMapping("/add")
-    public R add(@RequestBody LingshixinxiEntity lingshixinxi, HttpServletRequest request) {
-        //ValidatorUtils.validateEntity(lingshixinxi);
+    public R add(@RequestBody LingshixinxiEntity lingshixinxi) {
         lingshixinxiService.insert(lingshixinxi);
         return R.ok();
     }
 
-
-    /**
-     * 修改
-     */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody LingshixinxiEntity lingshixinxi, HttpServletRequest request) {
-        //ValidatorUtils.validateEntity(lingshixinxi);
-        lingshixinxiService.updateById(lingshixinxi);//全部更新
+    public R update(@RequestBody LingshixinxiEntity lingshixinxi) {
+        lingshixinxiService.updateById(lingshixinxi);
         return R.ok();
     }
 
-    /**
-     * 审核
-     */
     @RequestMapping("/shBatch")
     @Transactional
-    public R update(@RequestBody Long[] ids, @RequestParam String sfsh, @RequestParam String shhf) {
-        List<LingshixinxiEntity> list = new ArrayList<LingshixinxiEntity>();
+    public R auditBatch(@RequestBody Long[] ids,
+                        @RequestParam String sfsh,
+                        @RequestParam String shhf) {
+
+        List<LingshixinxiEntity> list = new ArrayList<>();
         for (Long id : ids) {
-            LingshixinxiEntity lingshixinxi = lingshixinxiService.selectById(id);
-            lingshixinxi.setSfsh(sfsh);
-            lingshixinxi.setShhf(shhf);
-            list.add(lingshixinxi);
+            LingshixinxiEntity e = lingshixinxiService.selectById(id);
+            e.setSfsh(sfsh);
+            e.setShhf(shhf);
+            list.add(e);
         }
         lingshixinxiService.updateBatchById(list);
         return R.ok();
     }
 
-
-    /**
-     * 删除
-     */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] ids) {
         lingshixinxiService.deleteBatchIds(Arrays.asList(ids));
         return R.ok();
     }
 
-
-    /**
-     * 前端智能排序
-     */
+    /*──────────────────  ★ 智能排序（未登录）★  ──────────────────*/
     @IgnoreAuth
     @RequestMapping("/autoSort")
-    public R autoSort(@RequestParam Map<String, Object> params, LingshixinxiEntity lingshixinxi, HttpServletRequest request, String pre) {
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
-        Map<String, Object> newMap = new HashMap<String, Object>();
-        Map<String, Object> param = new HashMap<String, Object>();
-        Iterator<Map.Entry<String, Object>> it = param.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, Object> entry = it.next();
-            String key = entry.getKey();
-            String newKey = entry.getKey();
-            if (pre.endsWith(".")) {
-                newMap.put(pre + newKey, entry.getValue());
-            } else if (StringUtils.isEmpty(pre)) {
-                newMap.put(newKey, entry.getValue());
-            } else {
-                newMap.put(pre + "." + newKey, entry.getValue());
-            }
-        }
-        params.put("sort", "click_number");
-        params.put("order", "desc");
-        PageUtils page = lingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
+    public R autoSort(@RequestParam Map<String, Object> params,
+                      LingshixinxiEntity lingshixinxi) {
+
+        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
+        ew.eq("sfsh", "是");                        // 只展示已审核通过的
+
+        /* 重点①：给未传值时设置默认排序 —— 点击量高 → 时间新 */
+        params.putIfAbsent("sort",  "click_number");   // 数据库字段
+        params.putIfAbsent("order", "desc");
+
+        PageUtils page = lingshixinxiService.queryPage(
+                params,
+                MPUtil.sort(
+                        MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params),
+                        params));
+
         return R.ok().put("data", page);
     }
 
-    /**
-     * 按用户购买推荐
-     */
+    /*──────────────────  ★ 智能排序（按用户购买历史推荐）★  ──────────────────*/
     @RequestMapping("/autoSort2")
-    public R autoSort2(@RequestParam Map<String, Object> params, LingshixinxiEntity lingshixinxi, HttpServletRequest request) {
-        String userId = request.getSession().getAttribute("userId").toString();
+    public R autoSort2(@RequestParam Map<String, Object> params,
+                       LingshixinxiEntity lingshixinxi,
+                       HttpServletRequest request) {
+
+        String userId = String.valueOf(request.getSession().getAttribute("userId"));
         String goodtypeColumn = "lingshifenlei";
-        List<OrdersEntity> orders = ordersService.selectList(new EntityWrapper<OrdersEntity>().eq("userid", userId).eq("tablename", "lingshixinxi").orderBy("addtime", false));
-        List<String> goodtypes = new ArrayList<String>();
-        Integer limit = params.get("limit") == null ? 10 : Integer.parseInt(params.get("limit").toString());
-        List<LingshixinxiEntity> lingshixinxiList = new ArrayList<LingshixinxiEntity>();
-        //去重
-        List<OrdersEntity> ordersDist = new ArrayList<OrdersEntity>();
-        for (OrdersEntity o1 : orders) {
-            boolean addFlag = true;
-            for (OrdersEntity o2 : ordersDist) {
-                if (o1.getGoodid() == o2.getGoodid() || o1.getGoodtype().equals(o2.getGoodtype())) {
-                    addFlag = false;
-                    break;
-                }
-            }
-            if (addFlag) ordersDist.add(o1);
-        }
-        if (ordersDist != null && ordersDist.size() > 0) {
-            for (OrdersEntity o : ordersDist) {
-                lingshixinxiList.addAll(lingshixinxiService.selectList(new EntityWrapper<LingshixinxiEntity>().eq(goodtypeColumn, o.getGoodtype())));
+
+        /* 1. 找到当前用户买过的不同“零食分类” */
+        List<OrdersEntity> orders = ordersService.selectList(
+                new EntityWrapper<OrdersEntity>()
+                        .eq("userid", userId)
+                        .eq("tablename", "lingshixinxi")
+                        .orderBy("addtime", false));
+
+        // 按分类去重
+        List<String> boughtTypes = new ArrayList<>();
+        for (OrdersEntity o : orders) {
+            if (!boughtTypes.contains(o.getGoodtype())) {
+                boughtTypes.add(o.getGoodtype());
             }
         }
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<LingshixinxiEntity>();
-        params.put("sort", "id");
-        params.put("order", "desc");
-        PageUtils page = lingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshixinxi), params), params));
-        List<LingshixinxiEntity> pageList = (List<LingshixinxiEntity>) page.getList();
-        if (lingshixinxiList.size() < limit) {
-            int toAddNum = (limit - lingshixinxiList.size()) <= pageList.size() ? (limit - lingshixinxiList.size()) : pageList.size();
-            for (LingshixinxiEntity o1 : pageList) {
-                boolean addFlag = true;
-                for (LingshixinxiEntity o2 : lingshixinxiList) {
-                    if (o1.getId().intValue() == o2.getId().intValue()) {
-                        addFlag = false;
-                        break;
-                    }
-                }
-                if (addFlag) {
-                    lingshixinxiList.add(o1);
-                    if (--toAddNum == 0) break;
-                }
-            }
-        } else if (lingshixinxiList.size() > limit) {
-            lingshixinxiList = lingshixinxiList.subList(0, limit);
+
+        /* 2. 取出这些分类下的商品，当作“相关推荐” */
+        List<LingshixinxiEntity> recomList = new ArrayList<>();
+        for (String type : boughtTypes) {
+            recomList.addAll(
+                    lingshixinxiService.selectList(
+                            new EntityWrapper<LingshixinxiEntity>()
+                                    .eq(goodtypeColumn, type)
+                                    .eq("sfsh", "是")
+                    )
+            );
         }
-        page.setList(lingshixinxiList);
+
+        /* 3. 如数量不足，再用普通排序兜底补足到 limit 条 */
+        params.putIfAbsent("limit", 10);
+        params.putIfAbsent("page",  "1");
+        params.putIfAbsent("sort",  "click_number");
+        params.putIfAbsent("order", "desc");
+
+        PageUtils page = lingshixinxiService.queryPage(
+                params,
+                MPUtil.sort(
+                        MPUtil.between(new EntityWrapper<LingshixinxiEntity>(), params),
+                        params));
+
+        List<LingshixinxiEntity> fallback = (List<LingshixinxiEntity>) page.getList();
+        int limit = Integer.parseInt(params.get("limit").toString());
+
+        for (LingshixinxiEntity fb : fallback) {
+            if (recomList.size() >= limit) break;
+            // 去重
+            boolean exists = recomList.stream().anyMatch(e -> e.getId().equals(fb.getId()));
+            if (!exists) recomList.add(fb);
+        }
+
+        /* 4. 最终结果写回 PageUtils 并返回 */
+        page.setList(recomList.size() > limit ? recomList.subList(0, limit) : recomList);
         return R.ok().put("data", page);
     }
-
-
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 
 
 /**
- * 零食分类
+ * 商品分类
  * 数据库通用操作实体类（普通增删改查）
  *
  * @author
@@ -29,7 +29,7 @@ public class LingshifenleiEntity<T> implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 零食分类
+     * 商品分类
      */
 
     private String lingshifenlei;
@@ -67,14 +67,14 @@ public class LingshifenleiEntity<T> implements Serializable {
     }
 
     /**
-     * 获取：零食分类
+     * 获取：商品分类
      */
     public String getLingshifenlei() {
         return lingshifenlei;
     }
 
     /**
-     * 设置：零食分类
+     * 设置：商品分类
      */
     public void setLingshifenlei(String lingshifenlei) {
         this.lingshifenlei = lingshifenlei;

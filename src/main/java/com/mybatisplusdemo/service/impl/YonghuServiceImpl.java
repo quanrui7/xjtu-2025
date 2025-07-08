@@ -22,7 +22,7 @@ public class YonghuServiceImpl extends ServiceImpl<YonghuMapper, YonghuEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<YonghuEntity> page = this.selectPage(
-                new Query<YonghuEntity>(params).getPage(),
+                new Query<YonghuEntity>(params).getPage(params),
                 new EntityWrapper<YonghuEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class YonghuServiceImpl extends ServiceImpl<YonghuMapper, YonghuEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<YonghuEntity> wrapper) {
-        Page<YonghuDTO> page = new Query<YonghuDTO>(params).getPage();
+        Page<YonghuDTO> page = new Query<YonghuDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

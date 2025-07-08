@@ -22,7 +22,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<MenuEntity> page = this.selectPage(
-                new Query<MenuEntity>(params).getPage(),
+                new Query<MenuEntity>(params).getPage(params),
                 new EntityWrapper<MenuEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<MenuEntity> wrapper) {
-        Page<MenuDTO> page = new Query<MenuDTO>(params).getPage();
+        Page<MenuDTO> page = new Query<MenuDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

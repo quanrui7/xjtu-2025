@@ -22,7 +22,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartEntity> impleme
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<CartEntity> page = this.selectPage(
-                new Query<CartEntity>(params).getPage(),
+                new Query<CartEntity>(params).getPage(params),
                 new EntityWrapper<CartEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, CartEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<CartEntity> wrapper) {
-        Page<CartDTO> page = new Query<CartDTO>(params).getPage();
+        Page<CartDTO> page = new Query<CartDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

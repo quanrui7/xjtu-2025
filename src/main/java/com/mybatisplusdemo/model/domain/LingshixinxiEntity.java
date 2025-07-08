@@ -1,5 +1,6 @@
 package com.mybatisplusdemo.model.domain;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 
 /**
- * 零食信息
+ * 商品信息
  * 数据库通用操作实体类（普通增删改查）
  *
  * @author
@@ -29,7 +30,7 @@ public class LingshixinxiEntity<T> implements Serializable {
     @TableId(type = IdType.AUTO)
     private Long id;
     /**
-     * 零食名称
+     * 商品名称
      */
 
     private String lingshimingcheng;
@@ -39,7 +40,7 @@ public class LingshixinxiEntity<T> implements Serializable {
 
     private String tupian;
     /**
-     * 零食分类
+     * 商品分类
      */
 
     private String lingshifenlei;
@@ -54,7 +55,7 @@ public class LingshixinxiEntity<T> implements Serializable {
 
     private String pinpai;
     /**
-     * 零食详情
+     * 商品详情
      */
 
     private String lingshixiangqing;
@@ -79,6 +80,7 @@ public class LingshixinxiEntity<T> implements Serializable {
      * 商家账号
      */
 
+
     private String shangjiazhanghao;
     /**
      * 商家名称
@@ -99,6 +101,7 @@ public class LingshixinxiEntity<T> implements Serializable {
      * 赞
      */
 
+    @TableField("thumbsup_number")
     private Integer thumbsupNumber;
     /**
      * 踩
@@ -109,6 +112,7 @@ public class LingshixinxiEntity<T> implements Serializable {
      * 收藏数
      */
 
+    @TableField("storeup_number")
     private Integer storeupNumber;
     /**
      * 评论数
@@ -119,6 +123,7 @@ public class LingshixinxiEntity<T> implements Serializable {
      * 点击次数
      */
 
+    @TableField("click_number")
     private Integer clickNumber;
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat
@@ -155,14 +160,14 @@ public class LingshixinxiEntity<T> implements Serializable {
     }
 
     /**
-     * 获取：零食名称
+     * 获取：商品名称
      */
     public String getLingshimingcheng() {
         return lingshimingcheng;
     }
 
     /**
-     * 设置：零食名称
+     * 设置：商品名称
      */
     public void setLingshimingcheng(String lingshimingcheng) {
         this.lingshimingcheng = lingshimingcheng;
@@ -183,14 +188,14 @@ public class LingshixinxiEntity<T> implements Serializable {
     }
 
     /**
-     * 获取：零食分类
+     * 获取：商品分类
      */
     public String getLingshifenlei() {
         return lingshifenlei;
     }
 
     /**
-     * 设置：零食分类
+     * 设置：商品分类
      */
     public void setLingshifenlei(String lingshifenlei) {
         this.lingshifenlei = lingshifenlei;
@@ -225,14 +230,14 @@ public class LingshixinxiEntity<T> implements Serializable {
     }
 
     /**
-     * 获取：零食详情
+     * 获取：商品详情
      */
     public String getLingshixiangqing() {
         return lingshixiangqing;
     }
 
     /**
-     * 设置：零食详情
+     * 设置：商品详情
      */
     public void setLingshixiangqing(String lingshixiangqing) {
         this.lingshixiangqing = lingshixiangqing;

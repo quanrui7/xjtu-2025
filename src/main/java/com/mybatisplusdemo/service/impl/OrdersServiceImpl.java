@@ -22,7 +22,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, OrdersEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<OrdersEntity> page = this.selectPage(
-                new Query<OrdersEntity>(params).getPage(),
+                new Query<OrdersEntity>(params).getPage(params),
                 new EntityWrapper<OrdersEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, OrdersEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<OrdersEntity> wrapper) {
-        Page<OrdersDTO> page = new Query<OrdersDTO>(params).getPage();
+        Page<OrdersDTO> page = new Query<OrdersDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

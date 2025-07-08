@@ -53,7 +53,7 @@ public class PageUtils implements Serializable {
      * 空数据的分页
      */
     public PageUtils(Map<String, Object> params) {
-        Page page = new Query(params).getPage();
+        Page page = new Query(params).getPage(params);
         new PageUtils(page);
     }
 

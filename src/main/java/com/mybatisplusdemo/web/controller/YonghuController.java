@@ -43,8 +43,11 @@ public class YonghuController {
     @RequestMapping(value = "/login")
     public R login(String username, String password, String captcha, HttpServletRequest request) {
         YonghuEntity u = yonghuService.selectOne(new EntityWrapper<YonghuEntity>().eq("yonghuzhanghao", username));
+        if (u == null || !u.getYonghuzhanghao().equals(username)) {
+            return R.error("账号不正确");
+        }
         if (u == null || !u.getYonghumima().equals(password)) {
-            return R.error("账号或密码不正确");
+            return R.error("密码不正确");
         }
         String token = tokenService.generateToken(u.getId(), username, "yonghu", "用户");
         return R.ok().put("token", token);

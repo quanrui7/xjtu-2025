@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * 零食信息
+ * 商品信息
  *
  * @author
  * @email

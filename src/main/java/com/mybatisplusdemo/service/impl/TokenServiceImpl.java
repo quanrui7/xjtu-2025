@@ -28,7 +28,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, TokenEntity> impl
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<TokenEntity> page = this.selectPage(
-                new Query<TokenEntity>(params).getPage(),
+                new Query<TokenEntity>(params).getPage(params),
                 new EntityWrapper<TokenEntity>()
         );
         return new PageUtils(page);
@@ -42,7 +42,7 @@ public class TokenServiceImpl extends ServiceImpl<TokenMapper, TokenEntity> impl
     @Override
     public PageUtils queryPage(Map<String, Object> params,
                                Wrapper<TokenEntity> wrapper) {
-        Page<TokenEntity> page = new Query<TokenEntity>(params).getPage();
+        Page<TokenEntity> page = new Query<TokenEntity>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

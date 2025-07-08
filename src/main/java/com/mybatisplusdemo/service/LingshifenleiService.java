@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 /**
- * 零食分类
+ * 商品分类
  *
  * @author
  * @email

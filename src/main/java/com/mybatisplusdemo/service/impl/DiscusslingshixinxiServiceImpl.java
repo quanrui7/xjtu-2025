@@ -22,7 +22,7 @@ public class DiscusslingshixinxiServiceImpl extends ServiceImpl<Discusslingshixi
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<DiscusslingshixinxiEntity> page = this.selectPage(
-                new Query<DiscusslingshixinxiEntity>(params).getPage(),
+                new Query<DiscusslingshixinxiEntity>(params).getPage(params),
                 new EntityWrapper<DiscusslingshixinxiEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class DiscusslingshixinxiServiceImpl extends ServiceImpl<Discusslingshixi
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<DiscusslingshixinxiEntity> wrapper) {
-        Page<DiscusslingshixinxiDTO> page = new Query<DiscusslingshixinxiDTO>(params).getPage();
+        Page<DiscusslingshixinxiDTO> page = new Query<DiscusslingshixinxiDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

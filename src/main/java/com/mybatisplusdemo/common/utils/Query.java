@@ -82,7 +82,11 @@ public class Query<T> extends LinkedHashMap<String, Object> {
 
     }
 
-    public Page<T> getPage() {
+    public Query() {
+
+    }
+
+    public Page<T> getPage(Map<String, Object> params) {
         return page;
     }
 

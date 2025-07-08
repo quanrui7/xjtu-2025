@@ -22,7 +22,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEntity
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<AddressEntity> page = this.selectPage(
-                new Query<AddressEntity>(params).getPage(),
+                new Query<AddressEntity>(params).getPage(params),
                 new EntityWrapper<AddressEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, AddressEntity
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<AddressEntity> wrapper) {
-        Page<AddressDTO> page = new Query<AddressDTO>(params).getPage();
+        Page<AddressDTO> page = new Query<AddressDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;

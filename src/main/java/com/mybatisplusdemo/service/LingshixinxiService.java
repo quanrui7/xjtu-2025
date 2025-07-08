@@ -12,7 +12,7 @@ import java.util.Map;
 
 
 /**
- * 零食信息
+ * 商品信息
  *
  * @author
  * @email
@@ -21,6 +21,7 @@ import java.util.Map;
 public interface LingshixinxiService extends IService<LingshixinxiEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+    PageUtils autoSort(Map<String,Object> params);
 
     List<LingshixinxiDTO> selectListView(Wrapper<LingshixinxiEntity> wrapper);
 

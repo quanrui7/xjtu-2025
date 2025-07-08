@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * 零食信息
+ * 商品信息
  * 后端返回视图实体辅助类
  * （通常后端关联的表或者自定义的字段需要返回使用）
  *

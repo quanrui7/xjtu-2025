@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatisplusdemo.mapper.LingshixinxiMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.mybatisplusdemo.model.domain.LingshixinxiEntity" id="lingshixinxiMap">
+        <result property="lingshimingcheng" column="lingshimingcheng"/>
+        <result property="tupian" column="tupian"/>
+        <result property="lingshifenlei" column="lingshifenlei"/>
+        <result property="guige" column="guige"/>
+        <result property="pinpai" column="pinpai"/>
+        <result property="lingshixiangqing" column="lingshixiangqing"/>
+        <result property="shipin" column="shipin"/>
+        <result property="clicktime" column="clicktime"/>
+        <result property="price" column="price"/>
+        <result property="shangjiazhanghao" column="shangjiazhanghao"/>
+        <result property="shangjiamingcheng" column="shangjiamingcheng"/>
+        <result property="sfsh" column="sfsh"/>
+        <result property="shhf" column="shhf"/>
+        <result property="thumbsupNumber" column="thumbsup_number"/>
+        <result property="crazilyNumber" column="crazily_number"/>
+        <result property="storeupNumber" column="storeup_number"/>
+        <result property="discussNumber" column="discuss_number"/>
+        <result property="clickNumber" column="click_number"/>
+    </resultMap>
+
+    <select id="selectListView"
+            resultType="com.mybatisplusdemo.model.dto.LingshixinxiDTO">
+
+        SELECT lingshixinxi.* FROM lingshixinxi lingshixinxi
+        <where>1=1 ${ew.sqlSegment}</where>
+    </select>
+
+    <select id="selectView"
+            resultType="com.mybatisplusdemo.model.dto.LingshixinxiDTO">
+        SELECT * FROM lingshixinxi lingshixinxi
+        <where>1=1 ${ew.sqlSegment}</where>
+    </select>
+
+
+</mapper>

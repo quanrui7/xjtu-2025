@@ -22,7 +22,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, ConfigEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ConfigEntity> page = this.selectPage(
-                new Query<ConfigEntity>(params).getPage(),
+                new Query<ConfigEntity>(params).getPage(params),
                 new EntityWrapper<ConfigEntity>()
         );
         return new PageUtils(page);
@@ -30,7 +30,7 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, ConfigEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params, Wrapper<ConfigEntity> wrapper) {
-        Page<ConfigDTO> page = new Query<ConfigDTO>(params).getPage();
+        Page<ConfigDTO> page = new Query<ConfigDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;
