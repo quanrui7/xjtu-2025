@@ -195,61 +195,76 @@ public class ShangpinxinxiController {
                             ShangpinxinxiEntity lingshixinxi,
                             HttpServletRequest request) {
 
-
         String userId = String.valueOf(request.getSession().getAttribute("userId"));
         String goodtypeColumn = "lingshifenlei";
 
-        /* 1. 找到当前用户买过的不同“零食分类” */
+        // 1. 获取用户的历史订单记录
         List<OrdersEntity> orders = ordersService.selectList(
                 new EntityWrapper<OrdersEntity>()
                         .eq("userid", userId)
                         .eq("tablename", "lingshixinxi")
-                        .orderBy("addtime", false));
+                        .orderBy("addtime", false)
+        );
 
-        // 按分类去重
-        List<String> boughtTypes = new ArrayList<>();
+        // 2. 统计每个分类的购买次数（用于优先级排序）
+        Map<String, Integer> categoryCountMap = new LinkedHashMap<>();
         for (OrdersEntity o : orders) {
-            if (!boughtTypes.contains(o.getGoodtype())) {
-                boughtTypes.add(o.getGoodtype());
+            String type = o.getGoodtype();
+            if (type != null && !type.trim().equals("")) {
+                categoryCountMap.put(type, categoryCountMap.getOrDefault(type, 0) + 1);
             }
         }
 
-        /* 2. 取出这些分类下的商品，当作“相关推荐” */
+        // 3. 将分类按购买次数降序排序
+        List<String> sortedCategories = new ArrayList<>(categoryCountMap.keySet());
+        sortedCategories.sort((a, b) -> categoryCountMap.get(b).compareTo(categoryCountMap.get(a)));
+
+        // 4. 每类取最多 N 条（按点击量降序）
+        int perTypeLimit = 5;
         List<ShangpinxinxiEntity> recomList = new ArrayList<>();
-        for (String type : boughtTypes) {
-            recomList.addAll(
-                    shangpinxinxiService.selectList(
-                            new EntityWrapper<ShangpinxinxiEntity>()
-                                    .eq(goodtypeColumn, type)
-                                    .eq("sfsh", "是")
-                    )
+
+        for (String type : sortedCategories) {
+            List<ShangpinxinxiEntity> typeList = shangpinxinxiService.selectList(
+                    new EntityWrapper<ShangpinxinxiEntity>()
+                            .eq(goodtypeColumn, type)
+                            .eq("sfsh", "是")
+                            .orderBy("click_number", false)  // 点击量高的优先
             );
+
+            for (ShangpinxinxiEntity item : typeList) {
+                if (recomList.size() >= perTypeLimit * sortedCategories.size()) break;
+                if (recomList.stream().noneMatch(e -> e.getId().equals(item.getId()))) {
+                    recomList.add(item);
+                }
+            }
         }
 
-        /* 3. 如数量不足，再用普通排序兜底补足到 limit 条 */
+        // 5. 如果不足 limit 条，再按点击量补全
         params.putIfAbsent("limit", 10);
-        params.putIfAbsent("page",  "1");
-        params.putIfAbsent("sort",  "click_number");
+        params.putIfAbsent("page", "1");
+        params.putIfAbsent("sort", "click_number");
         params.putIfAbsent("order", "desc");
 
         PageUtils page = shangpinxinxiService.queryPage(
                 params,
                 MPUtil.sort(
                         MPUtil.between(new EntityWrapper<ShangpinxinxiEntity>(), params),
-                        params));
+                        params)
+        );
 
         List<ShangpinxinxiEntity> fallback = (List<ShangpinxinxiEntity>) page.getList();
         int limit = Integer.parseInt(params.get("limit").toString());
 
         for (ShangpinxinxiEntity fb : fallback) {
             if (recomList.size() >= limit) break;
-            // 去重
             boolean exists = recomList.stream().anyMatch(e -> e.getId().equals(fb.getId()));
             if (!exists) recomList.add(fb);
         }
 
-        /* 4. 最终结果写回 PageUtils 并返回 */
+        // 6. 最终只返回 limit 条
         page.setList(recomList.size() > limit ? recomList.subList(0, limit) : recomList);
+
         return Return.ok().put("data", page);
     }
+
 }
