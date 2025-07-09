@@ -3,9 +3,7 @@ package com.mybatisplusdemo.mapper;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 通用接口
- */
+//通用接口
 public interface CommonMapper {
     List<String> getOption(Map<String, Object> params);
 

@@ -11,13 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 管理员
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
 public interface UsersService extends IService<UsersEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 轮播图
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//轮播图
 public interface ConfigMapper extends BaseMapper<ConfigEntity> {
 
     List<ConfigDTO> selectListView(@Param("ew") Wrapper<ConfigEntity> wrapper);

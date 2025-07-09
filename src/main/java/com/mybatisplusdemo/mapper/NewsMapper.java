@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 新品资讯
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//新品资讯
 public interface NewsMapper extends BaseMapper<NewsEntity> {
 
     List<NewsDTO> selectListView(@Param("ew") Wrapper<NewsEntity> wrapper);

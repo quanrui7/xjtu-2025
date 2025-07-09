@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 用户
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//用户
 public interface YonghuMapper extends BaseMapper<YonghuEntity> {
 
     List<YonghuDTO> selectListView(@Param("ew") Wrapper<YonghuEntity> wrapper);

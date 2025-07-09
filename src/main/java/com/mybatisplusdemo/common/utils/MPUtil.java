@@ -7,9 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Mybatis-Plus工具类
- */
+
 public class MPUtil {
     public static final char UNDERLINE = '_';
 
@@ -151,12 +149,6 @@ public class MPUtil {
     }
 
 
-    /**
-     * 驼峰格式字符串转换为下划线格式字符串
-     *
-     * @param param
-     * @return
-     */
     public static String camelToUnderline(String param) {
         if (param == null || "".equals(param.trim())) {
             return "";
@@ -199,24 +191,14 @@ public class MPUtil {
         return newMap;
     }
 
-    /**
-     * 将List<Map<String, Object>>中的所有Map的键从驼峰命名转换为蛇形命名。
-     *
-     * @param camelList 驼峰命名的List<Map<String, Object>>
-     * @return 蛇形命名的List<Map < String, Object>>
-     */
+
     public static List<Map<String, Object>> camelListToSnake(List<Map<String, Object>> camelList) {
         return camelList.stream()
                 .map(map -> camelMapToSnake(map))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 将Map<String, Object>中的所有键从驼峰命名转换为蛇形命名。
-     *
-     * @param camelMap 驼峰命名的Map<String, Object>
-     * @return 蛇形命名的Map<String, Object>
-     */
+
     public static Map<String, Object> camelMapToSnake(Map<String, Object> camelMap) {
         Map<String, Object> snakeMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : camelMap.entrySet()) {
@@ -227,12 +209,6 @@ public class MPUtil {
     }
 
 
-    /**
-     * 将驼峰命名转换为蛇形命名。
-     *
-     * @param input 驼峰命名的字符串
-     * @return 蛇形命名的字符串
-     */
     public static String camelToSnake(String input) {
         // 使用正则表达式匹配大写字母，并在其前面添加下划线，然后转换为小写
         return input.replaceAll(
@@ -245,24 +221,13 @@ public class MPUtil {
         ).toLowerCase();
     }
 
-    /**
-     * 将List<Map<String, Object>>中的所有Map的键从蛇形命名转换为驼峰命名。
-     *
-     * @param snakeList 蛇形命名的List<Map<String, Object>>
-     * @return 驼峰命名的List<Map < String, Object>>
-     */
     public static List<Map<String, Object>> snakeListToCamel(List<Map<String, Object>> snakeList) {
         return snakeList.stream()
                 .map(map -> snakeMapToCamel(map))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 将Map<String, Object>中的所有键从蛇形命名转换为驼峰命名。
-     *
-     * @param snakeMap 蛇形命名的Map<String, Object>
-     * @return 驼峰命名的Map<String, Object>
-     */
+
     public static Map<String, Object> snakeMapToCamel(Map<String, Object> snakeMap) {
         Map<String, Object> camelMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : snakeMap.entrySet()) {
@@ -272,12 +237,7 @@ public class MPUtil {
         return camelMap;
     }
 
-    /**
-     * 将蛇形命名转换为驼峰命名。
-     *
-     * @param str 蛇形命名的字符串
-     * @return 驼峰命名的字符串
-     */
+
     public static String snakeToCamel(String str) {
         StringBuilder sb = new StringBuilder();
         boolean nextUpperCase = false;

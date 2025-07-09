@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 商家
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//商家
 public interface ShangjiaMapper extends BaseMapper<ShangjiaEntity> {
 
     List<ShangjiaDTO> selectListView(@Param("ew") Wrapper<ShangjiaEntity> wrapper);

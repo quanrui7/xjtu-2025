@@ -5,7 +5,7 @@ import com.mybatisplusdemo.assistant.IgnoreAuth;
 import com.mybatisplusdemo.model.domain.ConfigEntity;
 import com.mybatisplusdemo.model.domain.EIException;
 import com.mybatisplusdemo.service.ConfigService;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class FileController {
      */
     @RequestMapping("/upload")
     @IgnoreAuth
-    public R upload(@RequestParam("file") MultipartFile file, String type) throws Exception {
+    public Return upload(@RequestParam("file") MultipartFile file, String type) throws Exception {
         if (file.isEmpty()) {
             throw new EIException("上传文件不能为空");
         }
@@ -62,11 +62,6 @@ public class FileController {
         }
         File dest = new File(upload.getAbsolutePath() + "/" + fileName);
         file.transferTo(dest);
-        /**
-         * 如果使用idea或者eclipse重启项目，发现之前上传的图片或者文件丢失，将下面一行代码注释打开
-         * 请将以下的"D:\\cl123456\\src\\main\\resources\\static\\file"替换成你本地项目的upload路径，
-         * 并且项目路径不能存在中文、空格等特殊字符
-         */
 //		FileUtils.copyFile(dest, new File("D:\\cl123456\\src\\main\\resources\\static\\file"+"/"+fileName)); /**修改了路径以后请将该行最前面的//注释去掉**/
         if (StringUtils.isNotBlank(type) && type.equals("1")) {
             ConfigEntity configEntity = configService.selectOne(new EntityWrapper<ConfigEntity>().eq("name", "faceFile"));
@@ -79,7 +74,7 @@ public class FileController {
             }
             configService.insertOrUpdate(configEntity);
         }
-        return R.ok().put("file", fileName);
+        return Return.ok().put("file", fileName);
     }
 
     /**

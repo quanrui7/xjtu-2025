@@ -8,9 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * token
- */
+
 public interface TokenMapper extends BaseMapper<TokenEntity> {
 
     List<TokenEntity> selectListView(@Param("ew") Wrapper<TokenEntity> wrapper);

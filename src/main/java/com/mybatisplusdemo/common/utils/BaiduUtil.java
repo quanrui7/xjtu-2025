@@ -15,9 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 类说明 :
- */
 
 public class BaiduUtil {
 
@@ -27,14 +24,7 @@ public class BaiduUtil {
     public static final String SECRET_KEY = "wmZbglKccAGMBwzZCyn9IVQfK2ObRAtc";
     private static AipOcr ocrClient = null;
 
-    /**
-     * 根据经纬度获得省市区信息
-     *
-     * @param lon       纬度
-     * @param lat       经度
-     * @param coordtype 经纬度坐标系
-     * @return
-     */
+    //根据经纬度获得省市区信息
     public static Map<String, String> getCityByLonLat(String key, String lng, String lat) {
         String location = lat + "," + lng;
         try {
@@ -54,14 +44,7 @@ public class BaiduUtil {
         return null;
     }
 
-    /**
-     * 获取API访问token
-     * 该token有一定的有效期，需要自行管理，当失效时需重新获取.
-     *
-     * @param ak - 百度云官网获取的 API Key
-     * @param sk - 百度云官网获取的 Securet Key
-     * @return assess_token
-     */
+    //获取API访问token
     public static String getAuth(String ak, String sk) {
         // 获取token地址
         String authHost = "https://aip.baidubce.com/oauth/2.0/token?";
@@ -91,9 +74,7 @@ public class BaiduUtil {
             while ((line = in.readLine()) != null) {
                 result += line;
             }
-            /**
-             * 返回结果示例
-             */
+            //返回结果示例
             System.err.println("result:" + result);
             org.json.JSONObject jsonObject = new org.json.JSONObject(result);
             String access_token = jsonObject.getString("access_token");
@@ -105,11 +86,7 @@ public class BaiduUtil {
         return null;
     }
 
-    /**
-     * 识别图片上的文本内容，转成文字字符串返回
-     *
-     * @param imagePath 图片文件的路径
-     */
+    //识别图片上的文本内容，转成文字字符串返回
     public static String generalString(String imagePath, boolean isNewline) {
         try {
             HashMap<String, String> options = new HashMap<String, String>();

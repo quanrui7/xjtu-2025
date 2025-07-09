@@ -26,13 +26,7 @@ public class EncryptUtil {
     // AES初始化向量为16位
     private static final String AES_IV = "abcdefghijklmnop";
 
-    /**
-     * md5算法
-     *
-     * @param text明文
-     * @param key密钥
-     * @return 密文
-     */
+    //md5算法
     // 带秘钥加密
     public static String md5(String text) {
         if (text == null) return null;
@@ -41,13 +35,7 @@ public class EncryptUtil {
         return md5str;
     }
 
-    /**
-     * SHA-256算法
-     *
-     * @param text
-     * @return
-     * @throws Exception
-     */
+    //SHA-256算法
     public static String sha256(String text) {
         if (text == null) return null;
         StringBuilder stringBuilder = new StringBuilder();
@@ -67,13 +55,7 @@ public class EncryptUtil {
         return stringBuilder.toString();
     }
 
-    /**
-     * DES加密
-     *
-     * @param data 待加密的数据
-     * @param key  密钥，长度必须为8位
-     * @return 加密后的数据，使用Base64编码
-     */
+    //DES加密
     public static String desEncrypt(String text) {
         if (text == null) return null;
         try {
@@ -109,13 +91,7 @@ public class EncryptUtil {
         return null;
     }
 
-    /**
-     * DES解密
-     *
-     * @param encryptedData 加密后的数据，使用Base64编码
-     * @param key           密钥，长度必须为8位
-     * @return 解密后的数据
-     */
+    //DES解密
     public static String desDecrypt(String text) {
         if (text == null) return null;
         try {
@@ -153,12 +129,7 @@ public class EncryptUtil {
         return null;
     }
 
-    /**
-     * AES加密
-     *
-     * @param data 待加密的数据
-     * @return 加密后的数据，使用Base64编码
-     */
+    //AES加密
     public static String aesEncrypt(String text) {
         if (text == null) return null;
         try {
@@ -190,12 +161,7 @@ public class EncryptUtil {
         return null;
     }
 
-    /**
-     * AES解密
-     *
-     * @param encryptedData 加密后的数据，使用Base64编码
-     * @return 解密后的数据
-     */
+    //AES解密
     public static String aesDecrypt(String text) {
         if (text == null) return null;
         try {

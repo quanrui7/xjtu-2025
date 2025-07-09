@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mybatisplusdemo.assistant.IgnoreAuth;
 import com.mybatisplusdemo.model.domain.TokenEntity;
 import com.mybatisplusdemo.service.TokenService;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
-/**
- * 权限(Token)验证
- */
+//权限(Token)验证
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
 
@@ -53,9 +51,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         //从header中获取token
         String token = request.getHeader(LOGIN_TOKEN_KEY);
 
-        /**
-         * 不需要验证权限的方法直接放过
-         */
+        //不需要验证权限的方法直接放过
         if (annotation != null) {
             return true;
         }
@@ -78,7 +74,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
         try {
             writer = response.getWriter();
-            writer.print(JSONObject.toJSONString(R.error(401, "请先登录")));
+            writer.print(JSONObject.toJSONString(Return.error(401, "请先登录")));
         } finally {
             if (writer != null) {
                 writer.close();

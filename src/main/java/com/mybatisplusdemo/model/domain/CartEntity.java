@@ -12,71 +12,32 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 
-/**
- * 购物车
- * 数据库通用操作实体类（普通增删改查）
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//购物车
 @TableName("cart")
 public class CartEntity<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * 主键id
-     */
+
     @TableId(type = IdType.AUTO)
     private Long id;
-    /**
-     * 商品表名
-     */
-
+    //商品表名
     private String tablename;
-    /**
-     * 商品id
-     */
-
+    //商品id
     private Long goodid;
-    /**
-     * 商品名称
-     */
-
+    //商品名称
     private String goodname;
-    /**
-     * 图片
-     */
-
+    //图片
     private String picture;
-    /**
-     * 购买数量
-     */
-
+    //购买数量
     private Integer buynumber;
-    /**
-     * 单价
-     */
-
+    //单价
     private Double price;
-    /**
-     * 折扣价
-     */
-
+    //折扣价
     private Double discountprice;
-    /**
-     * 用户id
-     */
-
+    //用户id
     private Long userid;
-    /**
-     * 商户名称
-     */
-
+    //商户名称
     private String shangjiazhanghao;
-    /**
-     * 商品类型
-     */
-
+    //商品类型
     private String goodtype;
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat
@@ -112,142 +73,102 @@ public class CartEntity<T> implements Serializable {
         this.id = id;
     }
 
-    /**
-     * 获取：商品表名
-     */
+
     public String getTablename() {
         return tablename;
     }
 
-    /**
-     * 设置：商品表名
-     */
+
     public void setTablename(String tablename) {
         this.tablename = tablename;
     }
 
-    /**
-     * 获取：商品id
-     */
+
     public Long getGoodid() {
         return goodid;
     }
 
-    /**
-     * 设置：商品id
-     */
+
     public void setGoodid(Long goodid) {
         this.goodid = goodid;
     }
 
-    /**
-     * 获取：商品名称
-     */
+
     public String getGoodname() {
         return goodname;
     }
 
-    /**
-     * 设置：商品名称
-     */
+
     public void setGoodname(String goodname) {
         this.goodname = goodname;
     }
 
-    /**
-     * 获取：图片
-     */
+
     public String getPicture() {
         return picture;
     }
 
-    /**
-     * 设置：图片
-     */
+
     public void setPicture(String picture) {
         this.picture = picture;
     }
 
-    /**
-     * 获取：购买数量
-     */
+
     public Integer getBuynumber() {
         return buynumber;
     }
 
-    /**
-     * 设置：购买数量
-     */
+
     public void setBuynumber(Integer buynumber) {
         this.buynumber = buynumber;
     }
 
-    /**
-     * 获取：单价
-     */
+
     public Double getPrice() {
         return price;
     }
 
-    /**
-     * 设置：单价
-     */
+
     public void setPrice(Double price) {
         this.price = price;
     }
 
-    /**
-     * 获取：折扣价
-     */
+
     public Double getDiscountprice() {
         return discountprice;
     }
 
-    /**
-     * 设置：折扣价
-     */
+
     public void setDiscountprice(Double discountprice) {
         this.discountprice = discountprice;
     }
 
-    /**
-     * 获取：用户id
-     */
+
     public Long getUserid() {
         return userid;
     }
 
-    /**
-     * 设置：用户id
-     */
+
     public void setUserid(Long userid) {
         this.userid = userid;
     }
 
-    /**
-     * 获取：商户名称
-     */
+
     public String getShangjiazhanghao() {
         return shangjiazhanghao;
     }
 
-    /**
-     * 设置：商户名称
-     */
+
     public void setShangjiazhanghao(String shangjiazhanghao) {
         this.shangjiazhanghao = shangjiazhanghao;
     }
 
-    /**
-     * 获取：商品类型
-     */
+
     public String getGoodtype() {
         return goodtype;
     }
 
-    /**
-     * 设置：商品类型
-     */
+
     public void setGoodtype(String goodtype) {
         this.goodtype = goodtype;
     }

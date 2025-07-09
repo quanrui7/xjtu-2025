@@ -7,7 +7,7 @@ import com.mybatisplusdemo.model.dto.MenuDTO;
 import com.mybatisplusdemo.service.MenuService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * 菜单
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+
 @RestController
 @RequestMapping("/menu")
 public class MenuController {
@@ -35,13 +28,13 @@ public class MenuController {
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, MenuEntity menu,
-                  HttpServletRequest request) {
+    public Return page(@RequestParam Map<String, Object> params, MenuEntity menu,
+                       HttpServletRequest request) {
         EntityWrapper<MenuEntity> ew = new EntityWrapper<MenuEntity>();
 
 
         PageUtils page = menuService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, menu), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 
@@ -50,43 +43,43 @@ public class MenuController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, MenuEntity menu,
-                  HttpServletRequest request) {
+    public Return list(@RequestParam Map<String, Object> params, MenuEntity menu,
+                       HttpServletRequest request) {
         EntityWrapper<MenuEntity> ew = new EntityWrapper<MenuEntity>();
 
         PageUtils page = menuService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, menu), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(MenuEntity menu) {
+    public Return list(MenuEntity menu) {
         EntityWrapper<MenuEntity> ew = new EntityWrapper<MenuEntity>();
         ew.allEq(MPUtil.allEQMapPre(menu, "menu"));
-        return R.ok().put("data", menuService.selectListView(ew));
+        return Return.ok().put("data", menuService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(MenuEntity menu) {
+    public Return query(MenuEntity menu) {
         EntityWrapper<MenuEntity> ew = new EntityWrapper<MenuEntity>();
         ew.allEq(MPUtil.allEQMapPre(menu, "menu"));
         MenuDTO menuView = menuService.selectView(ew);
-        return R.ok("查询菜单成功").put("data", menuView);
+        return Return.ok("查询菜单成功").put("data", menuView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
+    public Return info(@PathVariable("id") Long id) {
         MenuEntity menu = menuService.selectById(id);
         menu = menuService.selectView(new EntityWrapper<MenuEntity>().eq("id", id));
-        return R.ok().put("data", menu);
+        return Return.ok().put("data", menu);
     }
 
     /**
@@ -94,10 +87,10 @@ public class MenuController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
+    public Return detail(@PathVariable("id") Long id) {
         MenuEntity menu = menuService.selectById(id);
         menu = menuService.selectView(new EntityWrapper<MenuEntity>().eq("id", id));
-        return R.ok().put("data", menu);
+        return Return.ok().put("data", menu);
     }
 
 
@@ -105,20 +98,20 @@ public class MenuController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody MenuEntity menu, HttpServletRequest request) {
+    public Return save(@RequestBody MenuEntity menu, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(menu);
         menuService.insert(menu);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody MenuEntity menu, HttpServletRequest request) {
+    public Return add(@RequestBody MenuEntity menu, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(menu);
         menuService.insert(menu);
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -127,10 +120,10 @@ public class MenuController {
      */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody MenuEntity menu, HttpServletRequest request) {
+    public Return update(@RequestBody MenuEntity menu, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(menu);
         menuService.updateById(menu);//全部更新
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -138,9 +131,9 @@ public class MenuController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
+    public Return delete(@RequestBody Long[] ids) {
         menuService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+        return Return.ok();
     }
 
 

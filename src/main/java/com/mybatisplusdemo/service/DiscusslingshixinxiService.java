@@ -11,13 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 商品信息评论表
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+
 public interface DiscusslingshixinxiService extends IService<DiscusslingshixinxiEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

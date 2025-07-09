@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 管理员
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//管理员
 public interface UsersMapper extends BaseMapper<UsersEntity> {
 
     List<UsersDTO> selectListView(@Param("ew") Wrapper<UsersEntity> wrapper);

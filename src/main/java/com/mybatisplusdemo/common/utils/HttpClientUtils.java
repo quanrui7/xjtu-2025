@@ -19,17 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * HttpClient工具类
- */
 public class HttpClientUtils {
 
-    /**
-     * @param uri
-     * @return String
-     * @description get请求方式
-     * @author: long.he01
-     */
     public static String doGet(String uri) {
 
         StringBuilder result = new StringBuilder();

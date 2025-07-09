@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.mybatisplusdemo.mapper.LingshixinxiMapper;
-import com.mybatisplusdemo.model.domain.LingshixinxiEntity;
-import com.mybatisplusdemo.model.dto.LingshixinxiDTO;
-import com.mybatisplusdemo.service.LingshixinxiService;
+import com.mybatisplusdemo.mapper.ShangpinxinxiMapper;
+import com.mybatisplusdemo.model.domain.ShangpinxinxiEntity;
+import com.mybatisplusdemo.model.dto.ShangpinxinxiDTO;
+import com.mybatisplusdemo.service.ShangpinxinxiService;
 import com.mybatisplusdemo.common.utils.PageUtils;
 import com.mybatisplusdemo.common.utils.Query;
 import org.springframework.stereotype.Service;
@@ -16,21 +16,21 @@ import java.util.List;
 import java.util.Map;
 
 @Service("lingshixinxiService")
-public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, LingshixinxiEntity> implements LingshixinxiService {
+public class ShangpinxinxiServiceImpl extends ServiceImpl<ShangpinxinxiMapper, ShangpinxinxiEntity> implements ShangpinxinxiService {
 
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<LingshixinxiEntity> page = this.selectPage(
-                new Query<LingshixinxiEntity>(params).getPage(params),
-                new EntityWrapper<LingshixinxiEntity>()
+        Page<ShangpinxinxiEntity> page = this.selectPage(
+                new Query<ShangpinxinxiEntity>(params).getPage(params),
+                new EntityWrapper<ShangpinxinxiEntity>()
         );
         return new PageUtils(page);
     }
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params, Wrapper<LingshixinxiEntity> wrapper) {
-        Page<LingshixinxiDTO> page = new Query<LingshixinxiDTO>(params).getPage(params);
+    public PageUtils queryPage(Map<String, Object> params, Wrapper<ShangpinxinxiEntity> wrapper) {
+        Page<ShangpinxinxiDTO> page = new Query<ShangpinxinxiDTO>(params).getPage(params);
         page.setRecords(baseMapper.selectListView(page, wrapper));
         PageUtils pageUtil = new PageUtils(page);
         return pageUtil;
@@ -39,12 +39,12 @@ public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, Lin
 
 
     @Override
-    public List<LingshixinxiDTO> selectListView(Wrapper<LingshixinxiEntity> wrapper) {
+    public List<ShangpinxinxiDTO> selectListView(Wrapper<ShangpinxinxiEntity> wrapper) {
         return baseMapper.selectListView(wrapper);
     }
 
     @Override
-    public LingshixinxiDTO selectView(Wrapper<LingshixinxiEntity> wrapper) {
+    public ShangpinxinxiDTO selectView(Wrapper<ShangpinxinxiEntity> wrapper) {
         return baseMapper.selectView(wrapper);
     }
 
@@ -56,13 +56,13 @@ public class LingshixinxiServiceImpl extends ServiceImpl<LingshixinxiMapper, Lin
         params.putIfAbsent("limit", "10");
         params.putIfAbsent("page",  "1");
 
-        EntityWrapper<LingshixinxiEntity> ew = new EntityWrapper<>();
+        EntityWrapper<ShangpinxinxiEntity> ew = new EntityWrapper<>();
         ew.eq("sfsh", "是")
                 .orderBy("click_number", false)
                 .orderBy("addtime",      false);
 
-        Page<LingshixinxiEntity> page = this.selectPage(
-                new Query<LingshixinxiEntity>().getPage(params), ew);
+        Page<ShangpinxinxiEntity> page = this.selectPage(
+                new Query<ShangpinxinxiEntity>().getPage(params), ew);
 
         return new PageUtils(page);
     }

@@ -8,15 +8,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
 
-/**
- * 商品信息评论表
- * 后端返回视图实体辅助类
- * （通常后端关联的表或者自定义的字段需要返回使用）
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+
 @TableName("discusslingshixinxi")
 public class DiscusslingshixinxiDTO extends DiscusslingshixinxiEntity implements Serializable {
     private static final long serialVersionUID = 1L;

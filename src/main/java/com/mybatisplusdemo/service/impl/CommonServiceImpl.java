@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 系统用户
- */
+//系统用户
 @Service("commonService")
 public class CommonServiceImpl implements CommonService {
 

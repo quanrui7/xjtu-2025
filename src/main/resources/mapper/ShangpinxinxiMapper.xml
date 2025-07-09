@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mybatisplusdemo.mapper.LingshixinxiMapper">
+<mapper namespace="com.mybatisplusdemo.mapper.ShangpinxinxiMapper">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.mybatisplusdemo.model.domain.LingshixinxiEntity" id="lingshixinxiMap">
+    <resultMap type="com.mybatisplusdemo.model.domain.ShangpinxinxiEntity" id="lingshixinxiMap">
         <result property="lingshimingcheng" column="lingshimingcheng"/>
         <result property="tupian" column="tupian"/>
         <result property="lingshifenlei" column="lingshifenlei"/>
@@ -26,14 +26,14 @@
     </resultMap>
 
     <select id="selectListView"
-            resultType="com.mybatisplusdemo.model.dto.LingshixinxiDTO">
+            resultType="com.mybatisplusdemo.model.dto.ShangpinxinxiDTO">
 
         SELECT lingshixinxi.* FROM lingshixinxi lingshixinxi
         <where>1=1 ${ew.sqlSegment}</where>
     </select>
 
     <select id="selectView"
-            resultType="com.mybatisplusdemo.model.dto.LingshixinxiDTO">
+            resultType="com.mybatisplusdemo.model.dto.ShangpinxinxiDTO">
         SELECT * FROM lingshixinxi lingshixinxi
         <where>1=1 ${ew.sqlSegment}</where>
     </select>

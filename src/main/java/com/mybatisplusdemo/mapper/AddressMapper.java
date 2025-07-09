@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 地址
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//地址
 public interface AddressMapper extends BaseMapper<AddressEntity> {
 
     List<AddressDTO> selectListView(@Param("ew") Wrapper<AddressEntity> wrapper);

@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 留言板
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//留言板
 public interface MessagesMapper extends BaseMapper<MessagesEntity> {
 
     List<MessagesDTO> selectListView(@Param("ew") Wrapper<MessagesEntity> wrapper);

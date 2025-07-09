@@ -2,12 +2,12 @@ package com.mybatisplusdemo.web.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.mybatisplusdemo.assistant.IgnoreAuth;
-import com.mybatisplusdemo.model.domain.LingshifenleiEntity;
-import com.mybatisplusdemo.model.dto.LingshifenleiDTO;
-import com.mybatisplusdemo.service.LingshifenleiService;
+import com.mybatisplusdemo.model.domain.ShangpinfenleiEntity;
+import com.mybatisplusdemo.model.dto.ShangpinfenleiDTO;
+import com.mybatisplusdemo.service.ShangpinfenleiService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,32 +16,25 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * 商品分类
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+
 @RestController
 @RequestMapping("/lingshifenlei")
 public class ShangpinfenleiController {
     @Autowired
-    private LingshifenleiService lingshifenleiService;
+    private ShangpinfenleiService shangpinfenleiService;
 
 
     /**
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, LingshifenleiEntity lingshifenlei,
-                  HttpServletRequest request) {
-        EntityWrapper<LingshifenleiEntity> ew = new EntityWrapper<LingshifenleiEntity>();
+    public Return page(@RequestParam Map<String, Object> params, ShangpinfenleiEntity lingshifenlei,
+                       HttpServletRequest request) {
+        EntityWrapper<ShangpinfenleiEntity> ew = new EntityWrapper<ShangpinfenleiEntity>();
 
 
-        PageUtils page = lingshifenleiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshifenlei), params), params));
-        return R.ok().put("data", page);
+        PageUtils page = shangpinfenleiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshifenlei), params), params));
+        return Return.ok().put("data", page);
     }
 
 
@@ -50,43 +43,43 @@ public class ShangpinfenleiController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, LingshifenleiEntity lingshifenlei,
-                  HttpServletRequest request) {
-        EntityWrapper<LingshifenleiEntity> ew = new EntityWrapper<LingshifenleiEntity>();
+    public Return list(@RequestParam Map<String, Object> params, ShangpinfenleiEntity lingshifenlei,
+                       HttpServletRequest request) {
+        EntityWrapper<ShangpinfenleiEntity> ew = new EntityWrapper<ShangpinfenleiEntity>();
 
-        PageUtils page = lingshifenleiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshifenlei), params), params));
-        return R.ok().put("data", page);
+        PageUtils page = shangpinfenleiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, lingshifenlei), params), params));
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(LingshifenleiEntity lingshifenlei) {
-        EntityWrapper<LingshifenleiEntity> ew = new EntityWrapper<LingshifenleiEntity>();
+    public Return list(ShangpinfenleiEntity lingshifenlei) {
+        EntityWrapper<ShangpinfenleiEntity> ew = new EntityWrapper<ShangpinfenleiEntity>();
         ew.allEq(MPUtil.allEQMapPre(lingshifenlei, "lingshifenlei"));
-        return R.ok().put("data", lingshifenleiService.selectListView(ew));
+        return Return.ok().put("data", shangpinfenleiService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(LingshifenleiEntity lingshifenlei) {
-        EntityWrapper<LingshifenleiEntity> ew = new EntityWrapper<LingshifenleiEntity>();
+    public Return query(ShangpinfenleiEntity lingshifenlei) {
+        EntityWrapper<ShangpinfenleiEntity> ew = new EntityWrapper<ShangpinfenleiEntity>();
         ew.allEq(MPUtil.allEQMapPre(lingshifenlei, "lingshifenlei"));
-        LingshifenleiDTO lingshifenleiView = lingshifenleiService.selectView(ew);
-        return R.ok("查询商品分类成功").put("data", lingshifenleiView);
+        ShangpinfenleiDTO lingshifenleiView = shangpinfenleiService.selectView(ew);
+        return Return.ok("查询商品分类成功").put("data", lingshifenleiView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
-        LingshifenleiEntity lingshifenlei = lingshifenleiService.selectById(id);
-        lingshifenlei = lingshifenleiService.selectView(new EntityWrapper<LingshifenleiEntity>().eq("id", id));
-        return R.ok().put("data", lingshifenlei);
+    public Return info(@PathVariable("id") Long id) {
+        ShangpinfenleiEntity lingshifenlei = shangpinfenleiService.selectById(id);
+        lingshifenlei = shangpinfenleiService.selectView(new EntityWrapper<ShangpinfenleiEntity>().eq("id", id));
+        return Return.ok().put("data", lingshifenlei);
     }
 
     /**
@@ -94,10 +87,10 @@ public class ShangpinfenleiController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
-        LingshifenleiEntity lingshifenlei = lingshifenleiService.selectById(id);
-        lingshifenlei = lingshifenleiService.selectView(new EntityWrapper<LingshifenleiEntity>().eq("id", id));
-        return R.ok().put("data", lingshifenlei);
+    public Return detail(@PathVariable("id") Long id) {
+        ShangpinfenleiEntity lingshifenlei = shangpinfenleiService.selectById(id);
+        lingshifenlei = shangpinfenleiService.selectView(new EntityWrapper<ShangpinfenleiEntity>().eq("id", id));
+        return Return.ok().put("data", lingshifenlei);
     }
 
 
@@ -105,20 +98,20 @@ public class ShangpinfenleiController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody LingshifenleiEntity lingshifenlei, HttpServletRequest request) {
+    public Return save(@RequestBody ShangpinfenleiEntity lingshifenlei, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(lingshifenlei);
-        lingshifenleiService.insert(lingshifenlei);
-        return R.ok();
+        shangpinfenleiService.insert(lingshifenlei);
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody LingshifenleiEntity lingshifenlei, HttpServletRequest request) {
+    public Return add(@RequestBody ShangpinfenleiEntity lingshifenlei, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(lingshifenlei);
-        lingshifenleiService.insert(lingshifenlei);
-        return R.ok();
+        shangpinfenleiService.insert(lingshifenlei);
+        return Return.ok();
     }
 
 
@@ -127,10 +120,10 @@ public class ShangpinfenleiController {
      */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody LingshifenleiEntity lingshifenlei, HttpServletRequest request) {
+    public Return update(@RequestBody ShangpinfenleiEntity lingshifenlei, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(lingshifenlei);
-        lingshifenleiService.updateById(lingshifenlei);//全部更新
-        return R.ok();
+        shangpinfenleiService.updateById(lingshifenlei);//全部更新
+        return Return.ok();
     }
 
 
@@ -138,9 +131,9 @@ public class ShangpinfenleiController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
-        lingshifenleiService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+    public Return delete(@RequestBody Long[] ids) {
+        shangpinfenleiService.deleteBatchIds(Arrays.asList(ids));
+        return Return.ok();
     }
 
 

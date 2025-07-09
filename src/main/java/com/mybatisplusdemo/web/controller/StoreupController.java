@@ -7,7 +7,7 @@ import com.mybatisplusdemo.model.dto.StoreupDTO;
 import com.mybatisplusdemo.service.StoreupService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * 我的收藏
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+
 @RestController
 @RequestMapping("/storeup")
 public class StoreupController {
@@ -35,8 +28,8 @@ public class StoreupController {
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, StoreupEntity storeup,
-                  HttpServletRequest request) {
+    public Return page(@RequestParam Map<String, Object> params, StoreupEntity storeup,
+                       HttpServletRequest request) {
         if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
             storeup.setUserid((Long) request.getSession().getAttribute("userId"));
         }
@@ -44,7 +37,7 @@ public class StoreupController {
 
 
         PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 
@@ -53,43 +46,43 @@ public class StoreupController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, StoreupEntity storeup,
-                  HttpServletRequest request) {
+    public Return list(@RequestParam Map<String, Object> params, StoreupEntity storeup,
+                       HttpServletRequest request) {
         EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
 
         PageUtils page = storeupService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, storeup), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(StoreupEntity storeup) {
+    public Return list(StoreupEntity storeup) {
         EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
         ew.allEq(MPUtil.allEQMapPre(storeup, "storeup"));
-        return R.ok().put("data", storeupService.selectListView(ew));
+        return Return.ok().put("data", storeupService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(StoreupEntity storeup) {
+    public Return query(StoreupEntity storeup) {
         EntityWrapper<StoreupEntity> ew = new EntityWrapper<StoreupEntity>();
         ew.allEq(MPUtil.allEQMapPre(storeup, "storeup"));
         StoreupDTO storeupView = storeupService.selectView(ew);
-        return R.ok("查询我的收藏成功").put("data", storeupView);
+        return Return.ok("查询我的收藏成功").put("data", storeupView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
+    public Return info(@PathVariable("id") Long id) {
         StoreupEntity storeup = storeupService.selectById(id);
         storeup = storeupService.selectView(new EntityWrapper<StoreupEntity>().eq("id", id));
-        return R.ok().put("data", storeup);
+        return Return.ok().put("data", storeup);
     }
 
     /**
@@ -97,10 +90,10 @@ public class StoreupController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
+    public Return detail(@PathVariable("id") Long id) {
         StoreupEntity storeup = storeupService.selectById(id);
         storeup = storeupService.selectView(new EntityWrapper<StoreupEntity>().eq("id", id));
-        return R.ok().put("data", storeup);
+        return Return.ok().put("data", storeup);
     }
 
 
@@ -108,21 +101,21 @@ public class StoreupController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
+    public Return save(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(storeup);
         storeup.setUserid((Long) request.getSession().getAttribute("userId"));
         storeupService.insert(storeup);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
+    public Return add(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(storeup);
         storeupService.insert(storeup);
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -131,10 +124,10 @@ public class StoreupController {
      */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
+    public Return update(@RequestBody StoreupEntity storeup, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(storeup);
         storeupService.updateById(storeup);//全部更新
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -142,9 +135,9 @@ public class StoreupController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
+    public Return delete(@RequestBody Long[] ids) {
         storeupService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+        return Return.ok();
     }
 
 

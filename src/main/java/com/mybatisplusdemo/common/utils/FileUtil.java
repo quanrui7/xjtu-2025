@@ -2,9 +2,6 @@ package com.mybatisplusdemo.common.utils;
 
 import java.io.*;
 
-/**
- * 类说明 :
- */
 
 public class FileUtil {
     public static byte[] FileToByte(File file) throws IOException {

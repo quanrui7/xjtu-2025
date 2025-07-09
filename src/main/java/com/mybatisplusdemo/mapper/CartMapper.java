@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 购物车
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//购物车
 public interface CartMapper extends BaseMapper<CartEntity> {
 
     List<CartDTO> selectListView(@Param("ew") Wrapper<CartEntity> wrapper);

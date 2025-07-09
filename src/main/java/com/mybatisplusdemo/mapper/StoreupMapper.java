@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 我的收藏
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//我的收藏
 public interface StoreupMapper extends BaseMapper<StoreupEntity> {
 
     List<StoreupDTO> selectListView(@Param("ew") Wrapper<StoreupEntity> wrapper);

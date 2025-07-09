@@ -10,14 +10,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * 商品订单
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
 public interface OrdersService extends IService<OrdersEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

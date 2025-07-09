@@ -7,7 +7,7 @@ import com.mybatisplusdemo.model.dto.CartDTO;
 import com.mybatisplusdemo.service.CartService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * 购物车
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -35,8 +28,8 @@ public class CartController {
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, CartEntity cart,
-                  HttpServletRequest request) {
+    public Return page(@RequestParam Map<String, Object> params, CartEntity cart,
+                       HttpServletRequest request) {
         if (!request.getSession().getAttribute("role").toString().equals("管理员")) {
             cart.setUserid((Long) request.getSession().getAttribute("userId"));
         }
@@ -44,7 +37,7 @@ public class CartController {
 
 
         PageUtils page = cartService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, cart), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 
@@ -53,43 +46,43 @@ public class CartController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, CartEntity cart,
-                  HttpServletRequest request) {
+    public Return list(@RequestParam Map<String, Object> params, CartEntity cart,
+                       HttpServletRequest request) {
         EntityWrapper<CartEntity> ew = new EntityWrapper<CartEntity>();
 
         PageUtils page = cartService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, cart), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(CartEntity cart) {
+    public Return list(CartEntity cart) {
         EntityWrapper<CartEntity> ew = new EntityWrapper<CartEntity>();
         ew.allEq(MPUtil.allEQMapPre(cart, "cart"));
-        return R.ok().put("data", cartService.selectListView(ew));
+        return Return.ok().put("data", cartService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(CartEntity cart) {
+    public Return query(CartEntity cart) {
         EntityWrapper<CartEntity> ew = new EntityWrapper<CartEntity>();
         ew.allEq(MPUtil.allEQMapPre(cart, "cart"));
         CartDTO cartView = cartService.selectView(ew);
-        return R.ok("查询购物车成功").put("data", cartView);
+        return Return.ok("查询购物车成功").put("data", cartView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
+    public Return info(@PathVariable("id") Long id) {
         CartEntity cart = cartService.selectById(id);
         cart = cartService.selectView(new EntityWrapper<CartEntity>().eq("id", id));
-        return R.ok().put("data", cart);
+        return Return.ok().put("data", cart);
     }
 
     /**
@@ -97,10 +90,10 @@ public class CartController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
+    public Return detail(@PathVariable("id") Long id) {
         CartEntity cart = cartService.selectById(id);
         cart = cartService.selectView(new EntityWrapper<CartEntity>().eq("id", id));
-        return R.ok().put("data", cart);
+        return Return.ok().put("data", cart);
     }
 
 
@@ -108,21 +101,21 @@ public class CartController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody CartEntity cart, HttpServletRequest request) {
+    public Return save(@RequestBody CartEntity cart, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(cart);
         cart.setUserid((Long) request.getSession().getAttribute("userId"));
         cartService.insert(cart);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody CartEntity cart, HttpServletRequest request) {
+    public Return add(@RequestBody CartEntity cart, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(cart);
         cartService.insert(cart);
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -131,10 +124,10 @@ public class CartController {
      */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody CartEntity cart, HttpServletRequest request) {
+    public Return update(@RequestBody CartEntity cart, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(cart);
         cartService.updateById(cart);//全部更新
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -142,9 +135,9 @@ public class CartController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
+    public Return delete(@RequestBody Long[] ids) {
         cartService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+        return Return.ok();
     }
 
 

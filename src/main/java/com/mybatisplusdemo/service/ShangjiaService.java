@@ -11,13 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 商家
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
 public interface ShangjiaService extends IService<ShangjiaEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

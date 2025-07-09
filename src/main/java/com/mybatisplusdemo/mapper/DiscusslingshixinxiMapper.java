@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 商品信息评论表
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//商品信息评论表
 public interface DiscusslingshixinxiMapper extends BaseMapper<DiscusslingshixinxiEntity> {
 
     List<DiscusslingshixinxiDTO> selectListView(@Param("ew") Wrapper<DiscusslingshixinxiEntity> wrapper);

@@ -10,13 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-/**
- * 菜单
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
+//菜单
 public interface MenuMapper extends BaseMapper<MenuEntity> {
 
     List<MenuDTO> selectListView(@Param("ew") Wrapper<MenuEntity> wrapper);

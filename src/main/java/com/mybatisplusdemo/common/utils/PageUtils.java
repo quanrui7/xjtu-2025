@@ -6,9 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 分页工具类
- */
+
 public class PageUtils implements Serializable {
     private static final long serialVersionUID = 1L;
     //总记录数
@@ -22,14 +20,7 @@ public class PageUtils implements Serializable {
     //列表数据
     private List<?> list;
 
-    /**
-     * 分页
-     *
-     * @param list       列表数据
-     * @param totalCount 总记录数
-     * @param pageSize   每页记录数
-     * @param currPage   当前页数
-     */
+
     public PageUtils(List<?> list, int totalCount, int pageSize, int currPage) {
         this.list = list;
         this.total = totalCount;
@@ -38,9 +29,7 @@ public class PageUtils implements Serializable {
         this.totalPage = (int) Math.ceil((double) totalCount / pageSize);
     }
 
-    /**
-     * 分页
-     */
+    //分页
     public PageUtils(Page<?> page) {
         this.list = page.getRecords();
         this.total = page.getTotal();
@@ -49,9 +38,7 @@ public class PageUtils implements Serializable {
         this.totalPage = page.getPages();
     }
 
-    /*
-     * 空数据的分页
-     */
+    //空数据的分页
     public PageUtils(Map<String, Object> params) {
         Page page = new Query(params).getPage(params);
         new PageUtils(page);

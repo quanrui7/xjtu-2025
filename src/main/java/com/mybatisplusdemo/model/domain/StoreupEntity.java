@@ -12,14 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 
-/**
- * 我的收藏
- * 数据库通用操作实体类（普通增删改查）
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+//我的收藏
 @TableName("storeup")
 public class StoreupEntity<T> implements Serializable {
     private static final long serialVersionUID = 1L;

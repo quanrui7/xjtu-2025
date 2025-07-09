@@ -11,13 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 新品资讯
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
 public interface NewsService extends IService<NewsEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

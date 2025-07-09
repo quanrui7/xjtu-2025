@@ -8,7 +8,7 @@ import com.mybatisplusdemo.service.ShangjiaService;
 import com.mybatisplusdemo.service.TokenService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +18,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * 商家
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:52
- */
 @RestController
 @RequestMapping("/shangjia")
 public class ShangjiaController {
@@ -41,16 +33,16 @@ public class ShangjiaController {
      */
     @IgnoreAuth
     @RequestMapping(value = "/login")
-    public R login(String username, String password, String captcha, HttpServletRequest request) {
+    public Return login(String username, String password, String captcha, HttpServletRequest request) {
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", username));
         if (u == null || !u.getShangjiazhanghao().equals(username)) {
-            return R.error("账号不正确");
+            return Return.error("账号不正确");
         }
         if (u == null || !u.getShangjiamima().equals(password)) {
-            return R.error("密码不正确");
+            return Return.error("密码不正确");
         }
         String token = tokenService.generateToken(u.getId(), username, "shangjia", "管理员");
-        return R.ok().put("token", token);
+        return Return.ok().put("token", token);
     }
 
 
@@ -59,16 +51,16 @@ public class ShangjiaController {
      */
     @IgnoreAuth
     @RequestMapping("/register")
-    public R register(@RequestBody ShangjiaEntity shangjia) {
+    public Return register(@RequestBody ShangjiaEntity shangjia) {
         //ValidatorUtils.validateEntity(shangjia);
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", shangjia.getShangjiazhanghao()));
         if (u != null) {
-            return R.error("注册用户已存在");
+            return Return.error("注册用户已存在");
         }
         Long uId = new Date().getTime();
         shangjia.setId(uId);
         shangjiaService.insert(shangjia);
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -76,18 +68,18 @@ public class ShangjiaController {
      * 退出
      */
     @RequestMapping("/logout")
-    public R logout(HttpServletRequest request) {
+    public Return logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return R.ok("退出成功");
+        return Return.ok("退出成功");
     }
 
     /**
      * 获取用户的session用户信息
      */
     @RequestMapping("/session")
-    public R getCurrUser(HttpServletRequest request) {
+    public Return getCurrUser(HttpServletRequest request) {
         Long id = (Long) request.getSession().getAttribute("userId");
-        return R.ok().put("data", shangjiaService.selectView(new EntityWrapper<ShangjiaEntity>().eq("id", id)));
+        return Return.ok().put("data", shangjiaService.selectView(new EntityWrapper<ShangjiaEntity>().eq("id", id)));
     }
 
     /**
@@ -95,14 +87,14 @@ public class ShangjiaController {
      */
     @IgnoreAuth
     @RequestMapping(value = "/resetPass")
-    public R resetPass(String username, HttpServletRequest request) {
+    public Return resetPass(String username, HttpServletRequest request) {
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", username));
         if (u == null) {
-            return R.error("账号不存在");
+            return Return.error("账号不存在");
         }
         u.setShangjiamima("123456");
         shangjiaService.updateById(u);
-        return R.ok("密码已重置为：123456");
+        return Return.ok("密码已重置为：123456");
     }
 
 
@@ -110,13 +102,13 @@ public class ShangjiaController {
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, ShangjiaEntity shangjia,
-                  HttpServletRequest request) {
+    public Return page(@RequestParam Map<String, Object> params, ShangjiaEntity shangjia,
+                       HttpServletRequest request) {
         EntityWrapper<ShangjiaEntity> ew = new EntityWrapper<ShangjiaEntity>();
 
 
         PageUtils page = shangjiaService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, shangjia), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 
@@ -125,43 +117,43 @@ public class ShangjiaController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, ShangjiaEntity shangjia,
-                  HttpServletRequest request) {
+    public Return list(@RequestParam Map<String, Object> params, ShangjiaEntity shangjia,
+                       HttpServletRequest request) {
         EntityWrapper<ShangjiaEntity> ew = new EntityWrapper<ShangjiaEntity>();
 
         PageUtils page = shangjiaService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, shangjia), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(ShangjiaEntity shangjia) {
+    public Return list(ShangjiaEntity shangjia) {
         EntityWrapper<ShangjiaEntity> ew = new EntityWrapper<ShangjiaEntity>();
         ew.allEq(MPUtil.allEQMapPre(shangjia, "shangjia"));
-        return R.ok().put("data", shangjiaService.selectListView(ew));
+        return Return.ok().put("data", shangjiaService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(ShangjiaEntity shangjia) {
+    public Return query(ShangjiaEntity shangjia) {
         EntityWrapper<ShangjiaEntity> ew = new EntityWrapper<ShangjiaEntity>();
         ew.allEq(MPUtil.allEQMapPre(shangjia, "shangjia"));
         ShangjiaDTO shangjiaView = shangjiaService.selectView(ew);
-        return R.ok("查询商家成功").put("data", shangjiaView);
+        return Return.ok("查询商家成功").put("data", shangjiaView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
+    public Return info(@PathVariable("id") Long id) {
         ShangjiaEntity shangjia = shangjiaService.selectById(id);
         shangjia = shangjiaService.selectView(new EntityWrapper<ShangjiaEntity>().eq("id", id));
-        return R.ok().put("data", shangjia);
+        return Return.ok().put("data", shangjia);
     }
 
     /**
@@ -169,10 +161,10 @@ public class ShangjiaController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
+    public Return detail(@PathVariable("id") Long id) {
         ShangjiaEntity shangjia = shangjiaService.selectById(id);
         shangjia = shangjiaService.selectView(new EntityWrapper<ShangjiaEntity>().eq("id", id));
-        return R.ok().put("data", shangjia);
+        return Return.ok().put("data", shangjia);
     }
 
 
@@ -180,38 +172,38 @@ public class ShangjiaController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
+    public Return save(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
         if (shangjiaService.selectCount(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", shangjia.getShangjiazhanghao())) > 0) {
-            return R.error("商家账号已存在");
+            return Return.error("商家账号已存在");
         }
         shangjia.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
         //ValidatorUtils.validateEntity(shangjia);
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", shangjia.getShangjiazhanghao()));
         if (u != null) {
-            return R.error("用户已存在");
+            return Return.error("用户已存在");
         }
         shangjia.setId(new Date().getTime());
         shangjiaService.insert(shangjia);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
+    public Return add(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
         if (shangjiaService.selectCount(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", shangjia.getShangjiazhanghao())) > 0) {
-            return R.error("商家账号已存在");
+            return Return.error("商家账号已存在");
         }
         shangjia.setId(new Date().getTime() + new Double(Math.floor(Math.random() * 1000)).longValue());
         //ValidatorUtils.validateEntity(shangjia);
         ShangjiaEntity u = shangjiaService.selectOne(new EntityWrapper<ShangjiaEntity>().eq("shangjiazhanghao", shangjia.getShangjiazhanghao()));
         if (u != null) {
-            return R.error("用户已存在");
+            return Return.error("用户已存在");
         }
         shangjia.setId(new Date().getTime());
         shangjiaService.insert(shangjia);
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -220,10 +212,10 @@ public class ShangjiaController {
      */
     @RequestMapping("/update")
     @Transactional
-    public R update(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
+    public Return update(@RequestBody ShangjiaEntity shangjia, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(shangjia);
         shangjiaService.updateById(shangjia);//全部更新
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -231,9 +223,9 @@ public class ShangjiaController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
+    public Return delete(@RequestBody Long[] ids) {
         shangjiaService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+        return Return.ok();
     }
 
 

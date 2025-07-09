@@ -11,13 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * 购物车
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
 public interface CartService extends IService<CartEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

@@ -7,9 +7,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * token表
- */
+
 @TableName("token")
 public class TokenEntity implements Serializable {
     private static final long serialVersionUID = 1L;

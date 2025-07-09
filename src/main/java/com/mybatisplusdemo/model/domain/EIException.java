@@ -1,8 +1,6 @@
 package com.mybatisplusdemo.model.domain;
 
-/**
- * 自定义异常
- */
+//自定义异常
 public class EIException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

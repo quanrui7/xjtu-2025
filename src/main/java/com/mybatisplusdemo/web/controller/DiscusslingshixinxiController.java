@@ -7,7 +7,7 @@ import com.mybatisplusdemo.model.dto.DiscusslingshixinxiDTO;
 import com.mybatisplusdemo.service.DiscusslingshixinxiService;
 import com.mybatisplusdemo.common.utils.MPUtil;
 import com.mybatisplusdemo.common.utils.PageUtils;
-import com.mybatisplusdemo.common.utils.R;
+import com.mybatisplusdemo.common.utils.Return;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- * 商品信息评论表
- * 后端接口
- *
- * @author
- * @email
- * @date 2025-02-15 13:47:53
- */
+
 @RestController
 @RequestMapping("/discusslingshixinxi")
 public class DiscusslingshixinxiController {
@@ -38,13 +31,13 @@ public class DiscusslingshixinxiController {
      * 后台列表
      */
     @RequestMapping("/page")
-    public R page(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi,
-                  HttpServletRequest request) {
+    public Return page(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi,
+                       HttpServletRequest request) {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
 
 
         PageUtils page = discusslingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, discusslingshixinxi), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 
@@ -53,43 +46,43 @@ public class DiscusslingshixinxiController {
      */
     @IgnoreAuth
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi,
-                  HttpServletRequest request) {
+    public Return list(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi,
+                       HttpServletRequest request) {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
 
         PageUtils page = discusslingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, discusslingshixinxi), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
     /**
      * 列表
      */
     @RequestMapping("/lists")
-    public R list(DiscusslingshixinxiEntity discusslingshixinxi) {
+    public Return list(DiscusslingshixinxiEntity discusslingshixinxi) {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
         ew.allEq(MPUtil.allEQMapPre(discusslingshixinxi, "discusslingshixinxi"));
-        return R.ok().put("data", discusslingshixinxiService.selectListView(ew));
+        return Return.ok().put("data", discusslingshixinxiService.selectListView(ew));
     }
 
     /**
      * 查询
      */
     @RequestMapping("/query")
-    public R query(DiscusslingshixinxiEntity discusslingshixinxi) {
+    public Return query(DiscusslingshixinxiEntity discusslingshixinxi) {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
         ew.allEq(MPUtil.allEQMapPre(discusslingshixinxi, "discusslingshixinxi"));
         DiscusslingshixinxiDTO discusslingshixinxiView = discusslingshixinxiService.selectView(ew);
-        return R.ok("查询商品信息评论表成功").put("data", discusslingshixinxiView);
+        return Return.ok("查询商品信息评论表成功").put("data", discusslingshixinxiView);
     }
 
     /**
      * 后端详情
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id) {
+    public Return info(@PathVariable("id") Long id) {
         DiscusslingshixinxiEntity discusslingshixinxi = discusslingshixinxiService.selectById(id);
         discusslingshixinxi = discusslingshixinxiService.selectView(new EntityWrapper<DiscusslingshixinxiEntity>().eq("id", id));
-        return R.ok().put("data", discusslingshixinxi);
+        return Return.ok().put("data", discusslingshixinxi);
     }
 
     /**
@@ -97,10 +90,10 @@ public class DiscusslingshixinxiController {
      */
     @IgnoreAuth
     @RequestMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Long id) {
+    public Return detail(@PathVariable("id") Long id) {
         DiscusslingshixinxiEntity discusslingshixinxi = discusslingshixinxiService.selectById(id);
         discusslingshixinxi = discusslingshixinxiService.selectView(new EntityWrapper<DiscusslingshixinxiEntity>().eq("id", id));
-        return R.ok().put("data", discusslingshixinxi);
+        return Return.ok().put("data", discusslingshixinxi);
     }
 
 
@@ -108,20 +101,20 @@ public class DiscusslingshixinxiController {
      * 后端保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
+    public Return save(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(discusslingshixinxi);
         discusslingshixinxiService.insert(discusslingshixinxi);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
      * 前端保存
      */
     @RequestMapping("/add")
-    public R add(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
+    public Return add(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(discusslingshixinxi);
         discusslingshixinxiService.insert(discusslingshixinxi);
-        return R.ok();
+        return Return.ok();
     }
 
     /**
@@ -129,9 +122,9 @@ public class DiscusslingshixinxiController {
      */
     @RequestMapping("/security")
     @IgnoreAuth
-    public R security(@RequestParam String username) {
+    public Return security(@RequestParam String username) {
         DiscusslingshixinxiEntity discusslingshixinxi = discusslingshixinxiService.selectOne(new EntityWrapper<DiscusslingshixinxiEntity>().eq("", username));
-        return R.ok().put("data", discusslingshixinxi);
+        return Return.ok().put("data", discusslingshixinxi);
     }
 
 
@@ -141,10 +134,10 @@ public class DiscusslingshixinxiController {
     @RequestMapping("/update")
     @Transactional
     @IgnoreAuth
-    public R update(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
+    public Return update(@RequestBody DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request) {
         //ValidatorUtils.validateEntity(discusslingshixinxi);
         discusslingshixinxiService.updateById(discusslingshixinxi);//全部更新
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -152,9 +145,9 @@ public class DiscusslingshixinxiController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids) {
+    public Return delete(@RequestBody Long[] ids) {
         discusslingshixinxiService.deleteBatchIds(Arrays.asList(ids));
-        return R.ok();
+        return Return.ok();
     }
 
 
@@ -163,7 +156,7 @@ public class DiscusslingshixinxiController {
      */
     @IgnoreAuth
     @RequestMapping("/autoSort")
-    public R autoSort(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request, String pre) {
+    public Return autoSort(@RequestParam Map<String, Object> params, DiscusslingshixinxiEntity discusslingshixinxi, HttpServletRequest request, String pre) {
         EntityWrapper<DiscusslingshixinxiEntity> ew = new EntityWrapper<DiscusslingshixinxiEntity>();
         Map<String, Object> newMap = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
@@ -183,7 +176,7 @@ public class DiscusslingshixinxiController {
         params.put("sort", "clicktime");
         params.put("order", "desc");
         PageUtils page = discusslingshixinxiService.queryPage(params, MPUtil.sort(MPUtil.between(MPUtil.likeOrEq(ew, discusslingshixinxi), params), params));
-        return R.ok().put("data", page);
+        return Return.ok().put("data", page);
     }
 
 

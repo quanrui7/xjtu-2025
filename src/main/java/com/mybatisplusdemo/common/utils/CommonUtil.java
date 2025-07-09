@@ -13,12 +13,7 @@ import java.util.Random;
 @Component
 public class CommonUtil {
 
-    /**
-     * 获取随机字符串
-     *
-     * @param num
-     * @return
-     */
+    //获取随机字符串
     public static String getRandomString(Integer num) {
         String base = "abcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -30,12 +25,7 @@ public class CommonUtil {
         return sb.toString();
     }
 
-    /**
-     * 获取随机验证码
-     *
-     * @param num
-     * @return
-     */
+    //获取随机验证码
     public static String getRandomNumber(Integer num) {
         String base = "0123456789";
         Random random = new Random();
@@ -67,15 +57,6 @@ public class CommonUtil {
                 break;
             // 数值类型
             case Cell.CELL_TYPE_NUMERIC:
-                /**
-                 * format 的值可能为以下这些 yyyyMMddHHmmss
-                 * yyyy-MM-dd----- 14
-                 * yyyy年m月d日----- 31
-                 * yyyy年m月--------57
-                 * m月d日  -----------58
-                 * HH:mm-----------20
-                 * h时mm分  --------- 32
-                 */
                 Object val = cell.getNumericCellValue();
                 // POI Excel 日期格式转换
                 String formatDate = "";
